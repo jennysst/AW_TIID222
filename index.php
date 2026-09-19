@@ -14,6 +14,18 @@
         }
         div{
             background: #be78bf;
+            padding: 20px;
+            margin: 20px;
+            border: 10px Solid black;
+        }
+        .seccion{
+            background: #693131;
+            padding-top: 20px;
+            padding-bottom: 5px;
+            padding-left: 10px;
+            padding-rigth: 25px;
+            border: 10px none;
+
         }
     </style>
 </head>
@@ -27,9 +39,13 @@
 
     <div>
     <h2>Titulo del parrafo</h2>
-    <p>Este es el parrafo</p>
+    <p >Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus, laborum quam. Alias atque corporis repellat, vel fugit placeat optio nemo accusamus dolorum aspernatur expedita distinctio fugiat ipsam ipsum excepturi minima.</p>
     </div>
 
+    <div class="seccion">
+        <h2>Titulo del parrafo</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore molestiae quas distinctio nobis aliquid similique neque aspernatur, odit corrupti dignissimos maiores, debitis inventore voluptates eum cupiditate expedita hic quod eius!</p>
+    </div>
 
 </body>
 </html>
