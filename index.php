@@ -18,6 +18,9 @@
             background: #be78bf;
             padding: 20px 40px;
             margin: 20px;
+
+            border: 10px hidden;
+
         }
 
 
@@ -26,13 +29,13 @@
             padding-top: 20px;
             padding-bottom: 20px;
             padding-left: 40px;
-            padding-rigth: 40px;
+            padding-right: 40px;
 
             margin-left: 50px;
-            margin-rigth: 30px;
+            margin-right: 30px;
             margin-bottom: 40px;
 
-            border: 10px none;
+            
         }
     </style>
 </head>
