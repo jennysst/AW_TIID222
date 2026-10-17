@@ -21,6 +21,13 @@ $query = mysqli_query($con, $sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD de Alumnos</title>
 </head>
+<style>
+    .forms{
+        display:flex; 
+        flex-direction: column;
+        gap:10px;
+    }
+</style>
 <body>
     <div style = "display: grid; grid-template-columns: 2fr 1fr; gap: 30px; ">
         <div>
@@ -48,7 +55,8 @@ $query = mysqli_query($con, $sql);
                             <td><?php echo $row['edad']?></td>
 
                             <td>
-                                
+                                <a href="editar.php?id=<?php echo $row['matricula']; ?>">Editar</a>
+                                <br>
                                  <a href="delete.php?id=<?php echo $row['matricula']; ?>">Eliminar</a>
                             </td>
                         </tr>
@@ -67,40 +75,76 @@ $query = mysqli_query($con, $sql);
                 </tbody>
             </table>
         </div>
+        <div class="forms">
+            <div class="form">
+                <h1>FORMULARIO</h1>
+                <form action="insertar.php" method="POST">
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" 
+                        class="form-control" 
+                        name="matricula" 
+                        placeholder="Matricula">
 
-        <div class="form">
-            <h1>FORMULARIO</h1>
-            <form action="insertar.php" method="POST">
-                <div style="display:flex; gap:10px;">
-                    <input type="text" 
-                    class="form-control" 
-                    name="matricula" 
-                    placeholder="Matricula">
+                        <input type="text" 
+                        class="form-control" 
+                        name="nombre" 
+                        placeholder="Nombre">
 
-                    <input type="text" 
-                    class="form-control" 
-                    name="nombre" 
-                    placeholder="Nombre">
+                        <input type="text" 
+                        class="form-control" 
+                        name="apellido_p" 
+                        placeholder="Apellido Paterno">
 
-                    <input type="text" 
-                    class="form-control" 
-                    name="apellido_p" 
-                    placeholder="Apellido Paterno">
+                        <input type="text" 
+                        class="form-control" 
+                        name="apellido_m" 
+                        placeholder="Apellido Materno">
 
-                    <input type="text" 
-                    class="form-control" 
-                    name="apellido_m" 
-                    placeholder="Apellido Materno">
+                        <input type="text" 
+                        class="form-control" 
+                        name="edad" 
+                        placeholder="Edad">
 
-                    <input type="text" 
-                    class="form-control" 
-                    name="edad" 
-                    placeholder="Edad">
+                        <button type = "submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
 
-                    <button type = "submit">Guardar</button>
-                </div>
-            </form>
+            <div class="form">
+                <h1>Editar</h1>
+                <form action="editar.php" method="POST">
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" 
+                        class="form-control" 
+                        name="matricula" 
+                        placeholder="Matricula">
+
+                        <input type="text" 
+                        class="form-control" 
+                        name="nombre" 
+                        placeholder="Nombre">
+
+                        <input type="text" 
+                        class="form-control" 
+                        name="apellido_p" 
+                        placeholder="Apellido Paterno">
+
+                        <input type="text" 
+                        class="form-control" 
+                        name="apellido_m" 
+                        placeholder="Apellido Materno">
+
+                        <input type="text" 
+                        class="form-control" 
+                        name="edad" 
+                        placeholder="Edad">
+
+                        <button type = "submit" name="editar">Editar</button>
+                    </div>
+                </form>
+            </div>
         </div>
+
     </div>
 </body>
 </html>
