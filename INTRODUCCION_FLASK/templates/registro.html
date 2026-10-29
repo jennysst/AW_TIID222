@@ -8,30 +8,30 @@
 <body>
     <div>
         <h1>Registro</h1>
-        <form action="">
-            <label>Nombre(s)</label>
+        <form action="/registro" method="POST">
+            <label>Nombre(s): </label>
             <input type="text" name="nombre" required>
                 <br><br>
-            <label>Apellido Paterno</label>
+            <label>Apellido Paterno: </label>
             <input type="text" name="apellido_p" required>
                 <br><br>
-            <label>Apellido Materno</label>
+            <label>Apellido Materno: </label>
             <input type="text" name="apellido_m" required>
                 <br><br>
-            <label>Correo</label>
+            <label>Correo: </label>
             <input type="text" name="correo" required>
                 <br><br>
-            <label>Contraseña</label>
-            <input type="text" name="password_hash" required>
+            <label>Contraseña: </label>
+            <input type="text" name="password" required>
                 <br><br>
-            <label>id_rol</label>
+            <label for = "id_rol"> Tipo de usuario </label>
             <select name="id_rol" id="id_rol">
                 <option value="1">Administrador</option>
                 <option value="2">Usuario</option>
             </select>
             <button type="submit">Registrarse</button>
         </form>
-        <p><a href="{{ url_for('login')}}"></a></p>
+        <a href="{{ url_for('home')}}"></a>
     </div>
 </body>
 </html>
