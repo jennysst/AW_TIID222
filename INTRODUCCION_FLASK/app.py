@@ -77,14 +77,15 @@ def registro():
 
 #29/10/2026
 #Ruta de login para el inicio de sesión
-@app.route("/login", method = ["GET", "POST"])
+@app.route("/login", methods = ["GET", "POST"])
 def login():
 
     #Verificar si se enviaron los datos del formulario
     if request.method == "POST":
 
-        correo = request.form("correo")
-        password = request.form("password")
+        #Recuperar si se enviaron los datos del formulario
+        correo = request.form["correo"]
+        password = request.form["password"]
 
         #Crear un cursor para ejecutar SQL
         cursor = mysql.connection.cursor()
@@ -132,7 +133,35 @@ def login():
         return render_template(
             "login.html",
             error = "Correo o contraseña incorrectos")
-    return render_template()
+    return render_template("login.html")
+
+#30/10/2026
+#Ruta de administrador
+@app.route("/admin")
+def admin():
+
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+
+    if session.get("rol") != "Administrador":
+        return "Acceso denegado"
+    return render_template("administrador.html", nombre=session["nombre"])
+
+#Ruta de usuario
+@app.route("/usuario")
+def usuario():
+    if "id_usuario" not in session:
+        return redirect(url_for("login"))
+    
+    if session.get("rol") != "Usuario":
+        return "Acceso denegado"
+    return render_template("usuarios.html", nombre=session["nombre"])
+
+#Ruta de logOut
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 
 #Ejecutar el proyecto en el puerto 5000
 if __name__ == "__main__":
