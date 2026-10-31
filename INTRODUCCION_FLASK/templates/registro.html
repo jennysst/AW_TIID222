@@ -4,34 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <div>
         <h1>Registro</h1>
         <form action="/registro" method="POST">
             <label>Nombre(s): </label>
-            <input type="text" name="nombre" required>
+            <input type="text" name="nombre" class="input input-secondary" required>
                 <br><br>
             <label>Apellido Paterno: </label>
-            <input type="text" name="apellido_p" required>
+            <input type="text" name="apellido_p" class="input input-secondary" required>
                 <br><br>
             <label>Apellido Materno: </label>
-            <input type="text" name="apellido_m" required>
+            <input type="text" name="apellido_m" class="input input-secondary" required>
                 <br><br>
             <label>Correo: </label>
-            <input type="text" name="correo" required>
+            <input type="text" name="correo" class="input input-secondary" required>
                 <br><br>
             <label>Contraseña: </label>
-            <input type="text" name="password" required>
+            <input type="text" name="password" class="input input-secondary" required>
                 <br><br>
             <label for = "id_rol"> Tipo de usuario </label>
-            <select name="id_rol" id="id_rol">
+            <select name="id_rol" id="id_rol" class="select select-secondary">
                 <option value="1">Administrador</option>
                 <option value="2">Usuario</option>
             </select>
-            <button type="submit">Registrarse</button>
+            <button class="btn btn-outline btn-secondary" type="submit">Registrarse</button>
         </form>
-        <a href="{{ url_for('home')}}"></a>
+        <a class="link link-secondary" href="{{ url_for('login')}}">Regresar</a>
     </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </html>
