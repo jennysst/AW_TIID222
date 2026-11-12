@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Autos</title>
+</head>
+
+<body>
+    <div>
+        <h1>GESTION DE AUTOS</h1>
+
+        {% with mesajes = get_flashed_messages() %}
+        {% if mesajes %}
+        {% for msj in mesajes %}
+        <h3> {{ msj }} </h3>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <form action="/guardar" method="POST">
+            <input type="text" name="txtMarca" placeholder="Escribe la marca del auto">
+            <input type="text" name="txtModelo" placeholder="Escribe el modelo del auto">
+            <input type="number" name="txtAnio" placeholder="Escribe el año del auto">
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <td>Id: </td>
+                    <td>Marca: </td>
+                    <td>Modelo:</td>
+                    <td>Año: </td>
+                </tr>
+            </thead>
+        </table>
+
+        <tbody>
+            {% for alb in listAutos %}
+            <tr>
+                <td>{{alb.0}}</td>
+                <td>{{alb.1}}</td>
+                <td>{{alb.2}}</td>
+                <td>{{alb.3}}</td>
+                <td>
+                    <a href="/editar/{{alb.0}}">Editar</a>
+                    <a href="/eliminar/{{alb.0}}">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </div>
+</body>
+
+</html>
