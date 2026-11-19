@@ -1,6 +1,6 @@
 
 #Importamos la libreria de flask
-from flask import Flask, render_template, redirect, request, url_for, session
+from flask import Flask, render_template, redirect, request, url_for, session, flash
 
 #importar la libreria de mysql para Flask
 from flask_mysqldb import MySQL
@@ -29,50 +29,83 @@ def home():
     return render_template("login.html")
 
 #Creamos la ruta de registro
-@app.route("/registro", methods=["GET","POST"])
+# REGISTRO DE USUARIOS
+@app.route("/registro", methods=["GET", "POST"])
 def registro():
+
     if request.method == "POST":
+
         nombre = request.form["nombre"]
         apellido_p = request.form["apellido_p"]
         apellido_m = request.form["apellido_m"]
         correo = request.form["correo"]
         password = request.form["password"]
-        id_rol = request.form["id_rol"]
 
-        #Generar el hash de la contraseña
-        password_hash = generate_password_hash(password)
+        con = mysql.connection.cursor()
 
-        cursor = mysql.connection.cursor()
-        
-        #Comprobar si el correo ya existe
-        cursor.execute(
+        # Comprobar si el correo ya existe
+        con.execute(
             "SELECT id FROM usuarios WHERE correo = %s",
             (correo,)
         )
 
-        if cursor.fetchone():
-            cursor.close()
-            return render_template ("registro.html")
-        
-        #Insertar el usuario a la base de datos
-        cursor.execute(
-            """INSERT INTO usuarios
-            (nombre, apellido_p, apellido_m, correo, password, id_rol)
-            VALUES (%s, %s, %s, %s, %s, %s)
-            """, (
-                nombre, 
-                apellido_p,
-                apellido_m,
-                correo,
-                password_hash,
-                id_rol
+        if con.fetchone():
+            con.close()
+            flash("El correo ya está registrado")
+
+            if session.get("rol") == "Administrador":
+                return redirect(url_for("admin"))
+
+            return redirect(url_for("registro"))
+
+        # Determinar el rol según quién registra
+        if session.get("rol") == "Administrador":
+
+            id_rol = request.form["id_rol"]
+
+        else:
+
+            con.execute(
+                "SELECT id_rol FROM roles WHERE nombre = %s",
+                ("Usuario",)
             )
-        )
-        #Para guardar en la BD
+
+            rol = con.fetchone()
+
+            if not rol:
+                con.close()
+                flash("No se encontró el rol Usuario")
+                return redirect(url_for("registro"))
+
+            id_rol = rol[0]
+
+        # Generar hash de contraseña
+        password_hash = generate_password_hash(password)
+
+        # Insertar usuario
+        con.execute("""
+            INSERT INTO usuarios
+            (nombre, apellido_p, apellido_m, correo, password_hash, id_rol)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (
+            nombre,
+            apellido_p,
+            apellido_m,
+            correo,
+            password_hash,
+            id_rol
+        ))
+
         mysql.connection.commit()
-        cursor.close()
-        return redirect(url_for("home"))
-    #
+        con.close()
+
+        flash("El usuario fue agregado correctamente")
+
+        if session.get("rol") == "Administrador":
+            return redirect(url_for("admin"))
+
+        return redirect(url_for("login"))
+
     return render_template("registro.html")
 
 #29/10/2026
@@ -136,7 +169,8 @@ def login():
     return render_template("login.html")
 
 #30/10/2026
-#Ruta de administrador
+
+# PANEL DE ADMINISTRADOR
 @app.route("/admin")
 def admin():
 
@@ -144,8 +178,31 @@ def admin():
         return redirect(url_for("login"))
 
     if session.get("rol") != "Administrador":
-        return "Acceso denegado"
-    return render_template("administrador.html", nombre=session["nombre"])
+        return "Acceso denegado", 403
+
+    # CONSULTAR TODOS LOS USUARIOS
+    con = mysql.connection.cursor()
+
+    con.execute("""
+        SELECT usuarios.id,
+        usuarios.nombre,
+        usuarios.apellido_p,
+        usuarios.apellido_m,
+        usuarios.correo,
+        roles.nombre
+        FROM usuarios
+        INNER JOIN roles
+        ON usuarios.id_rol = roles.id_rol
+    """)
+
+    conUsuarios = con.fetchall()
+    con.close()
+
+    return render_template(
+        "administrador.html",
+        nombre=session["nombre"],
+        listUsers=conUsuarios
+    )
 
 #Ruta de usuario
 @app.route("/usuario")
